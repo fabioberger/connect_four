@@ -11,23 +11,21 @@ function ConnectFour(element, cols, rows) {
 ConnectFour.prototype = {
     _render: function() {
         this._renderHeader();
-        this._renderButton();
         this._renderStats();
         this._renderGrid();
+        this._renderButton();
         this.element.innerHtml = "";
         this.element.appendChild(this._header);
         this.element.appendChild(this._stats);
         this.element.appendChild(this._grid);
-        this.element.appendChild(this._buttons);
+        this.element.appendChild(this._buttonContainer);
         this.element.addEventListener("click", function(event) {
             if(event.target.nodeName === "DIV") {
                 var indexes = this._indexOf(event.target);
                 connectFour.addDisc(indexes[1]);
             }
             if (event.target.nodeName === "BUTTON") {
-                if(event.target.id === "restart") {
-                    this.clear();
-                }
+               this.clear();
             }
         }.bind(this));
     },
@@ -36,17 +34,17 @@ ConnectFour.prototype = {
         this._header.textContent = "Connect Four";
     },
     _renderButton: function() {
-        this._buttons = document.createElement("p");
+        this._buttonContainer = document.createElement("p");
         var button = document.createElement("button");
         button.type = "button";
-        button.id = "restart";
         button.textContent = "Restart Game";
-        this._buttons.appendChild(button)
+        this._buttonContainer.appendChild(button)
     },
     _renderStats: function() {
         this._stats = document.createElement("p");
         this._switchTurns();
     },
+    // Draw the grid with the containing circles
     _renderGrid: function() {
         this._grid = document.createElement("table");
         for(var i = 0; i < this.rows; i++) {
@@ -63,6 +61,7 @@ ConnectFour.prototype = {
     },
     // Returns a cell for a given coordinate pair if one exists
     _getCell: function(i, j) {
+        // Make sure (i,j) is a valid cell coordinate
         if(i >= 0 && j >= 0 && i < this.rows && j < this.cols) {
             return this._grid.childNodes[i].childNodes[j].childNodes[0];
         }
@@ -107,8 +106,8 @@ ConnectFour.prototype = {
         return false;
     },
     // recursively sums up how many consecutive cells have a given color along a path
-    // described as a change to (i,j) of (dirX,dirY) for each step
-    // i.e to follow a path along the right row of (i,j), keep adding (1,0) to those coordinates
+    // described as a change to (i,j) of (dirX,dirY) at each step
+    // i.e to follow a path along the right row of (i,j), keep adding (1,0) to the coordinates
     _followPath: function(i, j, dirX, dirY, color) {
         var potentialCell = this._getCell((i+dirX), (j+dirY));
         if(potentialCell == null || potentialCell.style.backgroundColor != color) {
