@@ -2,7 +2,7 @@
 
 This is a simple pure javascript version of the [Connect Four](https://en.wikipedia.org/wiki/Connect_Four) game.
 
-Check it out here: [http://jsfiddle.net/ma9cgu1q/14/](http://jsfiddle.net/ma9cgu1q/14/)
+Check it out here: [http://jsfiddle.net/ma9cgu1q/15/](http://jsfiddle.net/ma9cgu1q/14/)
 
 OR
 
