@@ -2,9 +2,9 @@ function ConnectFour(element, cols, rows) {
    this.element = element;
    this.rows = rows;
    this.cols = cols;
-   this.columnHeights = Array.apply(null, new Array(cols)).map(Number.prototype.valueOf,0);
+   this._columnHeight = Array.apply(null, new Array(cols)).map(Number.prototype.valueOf,0);
    this.turn = "red";
-   this._isInSession = true;
+   this.isInSession = true;
    this._render();
 }
 
@@ -86,7 +86,7 @@ ConnectFour.prototype = {
     },
     _gameOver: function() {
         this._stats.textContent = this.turn.toUpperCase() + " Player Has Won!";
-        this._isInSession = false;
+        this.isInSession = false;
     },
     // figures out if the move just played is a winning move by exploring all possible winning paths
     _isWinner: function(i, j) {
@@ -123,12 +123,12 @@ ConnectFour.prototype = {
     },
     // Add a disc to the grid in the column specified
     addDisc: function(j) {
-        if(!this._isInSession) {
+        if(!this.isInSession) {
             return this;
         }
-        var colHeight = this.columnHeights[j];
+        var colHeight = this._columnHeight[j];
         var rowLevel = this.rows - colHeight - 1;
-        this.columnHeights[j]++;
+        this._columnHeight[j]++;
         this.setColor(rowLevel, j, this.turn);
         if(this._isWinner(rowLevel, j)) {
           this._gameOver();
@@ -139,13 +139,13 @@ ConnectFour.prototype = {
     },
     // Clear the grid and re-enable playing
     clear: function() {
-        this.columnHeights = Array.apply(null, new Array(this.cols)).map(Number.prototype.valueOf,0);
+        this._columnHeight = Array.apply(null, new Array(this.cols)).map(Number.prototype.valueOf,0);
         for(var i = 0; i < this.rows; i++) {
             for(var j = 0; j < this.cols; j++) {
                 this._getCell(i, j).style.backgroundColor = "";
             }
         }
-        this._isInSession = true;
+        this.isInSession = true;
         this._switchTurns();
         return this;
     }
